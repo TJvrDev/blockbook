@@ -1,9 +1,9 @@
 {
-    "coin_name": "Alaris",
-    "coin_shortcut": "ALA",
-    "coin_label": "Alaris",
+    "coin_name": "Eboost",
+    "coin_shortcut": "EBST",
+    "coin_label": "Eboost",
     "rpc_url": "http://127.0.0.1:9331",
-    "rpc_user": "alarisrpc",
+    "rpc_user": "eboostrpc",
     "rpc_pass": "OIhjioahsiodhJIOAhjIOUAhuahdf89y8y89Y78y78SHFh23f",
     "rpc_timeout": 25,
     "parse": true,

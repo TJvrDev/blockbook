@@ -1,4 +1,4 @@
-package alaris
+package eboost
 
 import (
 	"blockbook/bchain"
@@ -9,29 +9,29 @@ import (
 	"github.com/juju/errors"
 )
 
-// AlarisRPC is an interface to JSON-RPC bitcoind service.
-type AlarisRPC struct {
+// EboostRPC is an interface to JSON-RPC bitcoind service.
+type EboostRPC struct {
 	*btc.BitcoinRPC
 }
 
-// NewAlarisRPC returns new AlarisRPC instance.
-func NewAlarisRPC(config json.RawMessage, pushHandler func(bchain.NotificationType)) (bchain.BlockChain, error) {
+// NewEboostRPC returns new EboostRPC instance.
+func NewEboostRPC(config json.RawMessage, pushHandler func(bchain.NotificationType)) (bchain.BlockChain, error) {
 	b, err := btc.NewBitcoinRPC(config, pushHandler)
 	if err != nil {
 		return nil, err
 	}
 
-	s := &AlarisRPC{
+	s := &EboostRPC{
 		BitcoinRPC: b.(*btc.BitcoinRPC),
 	}
-	s.RPCMarshaler = btc.JSONMarshalerV2{}
-	s.ChainConfig.SupportsEstimateFee = false
+	s.RPCMarshaler = btc.JSONMarshalerV1{}
+	s.ChainConfig.SupportsEstimateSmartFee = false
 
 	return s, nil
 }
 
-// Initialize initializes AlarisRPC instance.
-func (b *AlarisRPC) Initialize() error {
+// Initialize initializes EboostRPC instance.
+func (b *EboostRPC) Initialize() error {
 	ci, err := b.GetChainInfo()
 	if err != nil {
 		return err
@@ -42,7 +42,7 @@ func (b *AlarisRPC) Initialize() error {
 	params := GetChainParams(chainName)
 
 	// always create parser
-	b.Parser = NewAlarisParser(params, b.ChainConfig)
+	b.Parser = NewEboostParser(params, b.ChainConfig)
 
 	
 
@@ -62,7 +62,7 @@ func (b *AlarisRPC) Initialize() error {
 }
 
 // GetBlock returns block with given hash.
-func (b *AlarisRPC) GetBlock(hash string, height uint32) (*bchain.Block, error) {
+func (b *EboostRPC) GetBlock(hash string, height uint32) (*bchain.Block, error) {
 	var err error
 	if hash == "" && height > 0 {
 		hash, err = b.GetBlockHash(height)
@@ -107,12 +107,12 @@ func (b *AlarisRPC) GetBlock(hash string, height uint32) (*bchain.Block, error) 
 
 // GetTransactionForMempool returns a transaction by the transaction ID.
 // It could be optimized for mempool, i.e. without block time and confirmations
-func (b *AlarisRPC) GetTransactionForMempool(txid string) (*bchain.Tx, error) {
+func (b *EboostRPC) GetTransactionForMempool(txid string) (*bchain.Tx, error) {
 	return b.GetTransaction(txid)
 }
 
 // GetMempoolEntry returns mempool data for given transaction
-func (b *AlarisRPC) GetMempoolEntry(txid string) (*bchain.MempoolEntry, error) {
+func (b *EboostRPC) GetMempoolEntry(txid string) (*bchain.MempoolEntry, error) {
 	return nil, errors.New("GetMempoolEntry: not implemented")
 }
 

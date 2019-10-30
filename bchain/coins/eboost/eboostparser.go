@@ -1,4 +1,4 @@
-package alaris
+package eboost
 
 import (
 	"blockbook/bchain"
@@ -9,7 +9,7 @@ import (
 )
 
 const (
-	MainnetMagic wire.BitcoinNet = 0xfbcfccd4
+	MainnetMagic wire.BitcoinNet = 0xfcd9b7dd
 	TestnetMagic wire.BitcoinNet = 0xfbcdccd3
 	RegtestMagic wire.BitcoinNet = 0xfabfb5da
 )
@@ -22,9 +22,9 @@ var (
 func init() {
 	MainNetParams = chaincfg.MainNetParams
 	MainNetParams.Net = MainnetMagic
-	MainNetParams.PubKeyHashAddrID = []byte{23}
-	MainNetParams.ScriptHashAddrID = []byte{30}
-	MainNetParams.Bech32HRPSegwit = "ala"
+	MainNetParams.PubKeyHashAddrID = []byte{92}
+	MainNetParams.ScriptHashAddrID = []byte{5}
+	MainNetParams.Bech32HRPSegwit = "ebst"
 
 	TestNetParams = chaincfg.TestNet3Params
 	TestNetParams.Net = TestnetMagic
@@ -33,25 +33,25 @@ func init() {
 	TestNetParams.Bech32HRPSegwit = "tala"
 }
 
-// AlarisParser handle
-type AlarisParser struct {
+// EboostParser handle
+type EboostParser struct {
 	*btc.BitcoinParser
 	baseparser *bchain.BaseParser
 }
 
-// NewAlarisParser returns new AlarisParser instance
-func NewAlarisParser(params *chaincfg.Params, c *btc.Configuration) *AlarisParser {
-	return &AlarisParser{
+// NewEboostParser returns new EboostParser instance
+func NewEboostParser(params *chaincfg.Params, c *btc.Configuration) *EboostParser {
+	return &EboostParser{
 	BitcoinParser: btc.NewBitcoinParser(params, c),
 	baseparser:    &bchain.BaseParser{},
 	}
 }
 
-// GetChainParams contains network parameters for the main Alaris network,
-// and the test Alaris network
+// GetChainParams contains network parameters for the main Eboost network,
+// and the test Eboost network
 func GetChainParams(chain string) *chaincfg.Params {
-	// register bitcoin parameters in addition to alaris parameters
-	// alaris has dual standard of addresses and we want to be able to
+	// register bitcoin parameters in addition to eboost parameters
+	// eboost has dual standard of addresses and we want to be able to
 	// parse both standards
 	if !chaincfg.IsRegistered(&chaincfg.MainNetParams) {
 		chaincfg.RegisterBitcoinParams()
@@ -74,11 +74,11 @@ func GetChainParams(chain string) *chaincfg.Params {
 }
 
 // PackTx packs transaction to byte array using protobuf
-func (p *AlarisParser) PackTx(tx *bchain.Tx, height uint32, blockTime int64) ([]byte, error) {
+func (p *EboostParser) PackTx(tx *bchain.Tx, height uint32, blockTime int64) ([]byte, error) {
 	return p.baseparser.PackTx(tx, height, blockTime)
 }
 
 // UnpackTx unpacks transaction from protobuf byte array
-func (p *AlarisParser) UnpackTx(buf []byte) (*bchain.Tx, uint32, error) {
+func (p *EboostParser) UnpackTx(buf []byte) (*bchain.Tx, uint32, error) {
 	return p.baseparser.UnpackTx(buf)
 }

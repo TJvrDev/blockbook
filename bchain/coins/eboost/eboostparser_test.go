@@ -1,6 +1,6 @@
 // +build unittest
 
-package alaris
+package eboost
 
 import (
 	"blockbook/bchain"
